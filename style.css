@@ -1,0 +1,390 @@
+/* ── VARIABLES ───────────────────────────────────────────── */
+:root {
+  --bg:      #0a0a0f;
+  --surface: #16161f;
+  --border:  rgba(255,255,255,0.07);
+  --green:   #7fff6e;
+  --blue:    #6eb5ff;
+  --yellow:  #ffcb47;
+  --red:     #ff6b6b;
+  --purple:  #c896ff;
+  --pink:    #ff96c8;
+  --muted:   #6a6a80;
+  --text:    #e8e8f0;
+}
+
+/* ── RESET ───────────────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Instrument Sans', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  padding-bottom: 80px;
+}
+
+/* subtle grid bg */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(127,255,110,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(127,255,110,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── HEADER ──────────────────────────────────────────────── */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: linear-gradient(180deg, #111118 0%, #0a0a0f 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 20px 20px 16px;
+}
+
+.header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.header-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--green);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.header-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+.streak-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 1px;
+  text-align: right;
+}
+
+.streak-value {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--yellow);
+  text-align: right;
+}
+
+/* ── PROGRESS BAR ────────────────────────────────────────── */
+.progress-wrap { flex: 1; }
+
+.progress-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+#progress-pct.done { color: var(--green); font-weight: 700; }
+
+.progress-bg {
+  height: 6px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 100px;
+  background: linear-gradient(90deg, var(--green), #5dd44e);
+  transition: width 0.4s ease;
+}
+
+.progress-fill.done {
+  background: linear-gradient(90deg, var(--green), var(--blue));
+}
+
+/* ── MAIN WRAP ───────────────────────────────────────────── */
+.wrap {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 0 16px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── SECTION LABEL ───────────────────────────────────────── */
+.section-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin: 20px 0 10px;
+}
+
+/* ── CALENDAR ────────────────────────────────────────────── */
+.cal-dow-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+  margin-bottom: 3px;
+}
+
+.cal-dow-row span {
+  text-align: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--muted);
+  padding: 4px 0;
+}
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+}
+
+.cal-btn {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: #aaaacc;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  padding: 6px 2px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s;
+}
+
+.cal-btn:hover { background: rgba(127,255,110,0.08); }
+
+.cal-btn.today {
+  border-color: rgba(127,255,110,0.4);
+  color: var(--green);
+  font-weight: 700;
+}
+
+.cal-btn.selected {
+  background: var(--green);
+  color: #0a0a0f;
+  font-weight: 700;
+  border-color: transparent;
+}
+
+.cal-btn.empty {
+  background: transparent;
+  border-color: transparent;
+  cursor: default;
+  pointer-events: none;
+}
+
+/* ── DAY TABS ────────────────────────────────────────────── */
+.day-tabs {
+  display: flex;
+  gap: 6px;
+  margin: 20px 0;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+
+.day-tabs::-webkit-scrollbar { display: none; }
+
+.tab-btn {
+  background: rgba(255,255,255,0.05);
+  border: none;
+  border-radius: 8px;
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  padding: 7px 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+
+.tab-btn:hover { color: var(--text); }
+
+.tab-btn.active {
+  background: var(--green);
+  color: #0a0a0f;
+  font-weight: 700;
+}
+
+/* ── CHECKLIST ───────────────────────────────────────────── */
+.checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.task-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  transition: all 0.15s;
+}
+
+.task-row:hover { border-color: rgba(127,255,110,0.15); }
+
+.task-row.checked {
+  background: rgba(127,255,110,0.06);
+  border-color: rgba(127,255,110,0.2);
+}
+
+/* Checkbox */
+.checkbox {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 2px solid rgba(255,255,255,0.15);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+
+.task-row.checked .checkbox {
+  background: var(--green);
+  border-color: var(--green);
+}
+
+.checkbox svg { display: none; }
+.task-row.checked .checkbox svg { display: block; }
+
+/* Task content */
+.task-content { flex: 1; min-width: 0; }
+
+.task-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 3px;
+}
+
+.task-time {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.5px;
+}
+
+.task-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  transition: color 0.15s;
+}
+
+.task-row.checked .task-label {
+  color: var(--muted);
+  text-decoration: line-through;
+}
+
+/* ── TAG PILLS ───────────────────────────────────────────── */
+.tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+.tag-SKIN    { background: rgba(255,150,200,0.12); color: #ff96c8; }
+.tag-FITNESS { background: rgba(255,107,107,0.12); color: #ff6b6b; }
+.tag-FOOD    { background: rgba(255,255,255,0.07); color: #aaaacc; }
+.tag-APT     { background: rgba(255,203,71,0.12);  color: #ffcb47; }
+.tag-DATA    { background: rgba(127,255,110,0.12); color: #7fff6e; }
+.tag-REST    { background: rgba(255,255,255,0.06); color: #6a6a80; }
+.tag-DSA     { background: rgba(200,150,255,0.12); color: #c896ff; }
+.tag-JOB     { background: rgba(110,181,255,0.12); color: #6eb5ff; }
+.tag-TEMPLE  { background: rgba(255,220,100,0.15); color: #ffd740; }
+.tag-SLEEP   { background: rgba(100,150,255,0.12); color: #8aaeff; }
+.tag-FREE    { background: rgba(255,255,255,0.06); color: #6a6a80; }
+.tag-WALK    { background: rgba(255,107,107,0.12); color: #ff6b6b; }
+
+/* ── COMPLETE BANNER ─────────────────────────────────────── */
+.complete-banner {
+  margin-top: 24px;
+  background: linear-gradient(135deg,
+    rgba(127,255,110,0.08), rgba(110,181,255,0.08));
+  border: 1px solid rgba(127,255,110,0.25);
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+}
+
+.complete-emoji { font-size: 28px; margin-bottom: 8px; }
+
+.complete-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--green);
+}
+
+.complete-sub {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+/* ── RESET BUTTON ────────────────────────────────────────── */
+.reset-btn {
+  margin-top: 20px;
+  width: 100%;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.reset-btn:hover {
+  border-color: rgba(255,107,107,0.3);
+  color: var(--red);
+}
+
+/* ── UTILITY ─────────────────────────────────────────────── */
+.hidden { display: none !important; }
+
+/* ── MOBILE ──────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .header-title { font-size: 20px; }
+  .task-label   { font-size: 13px; }
+}

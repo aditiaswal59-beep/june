@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>June Grind Plan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- STICKY HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-left">
+        <div class="header-tag">// June 2026 · Daily Tracker</div>
+        <div class="header-title" id="header-title">Mon · Jun 1</div>
+      </div>
+      <div class="header-right">
+        <div class="streak-label">STREAK</div>
+        <div class="streak-value" id="streak-value">🔥 0</div>
+      </div>
+    </div>
+
+    <!-- PROGRESS BAR -->
+    <div class="header-inner" style="margin-top:14px;">
+      <div class="progress-wrap">
+        <div class="progress-meta">
+          <span id="progress-count">0 / 0 tasks</span>
+          <span id="progress-pct">0%</span>
+        </div>
+        <div class="progress-bg">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="wrap">
+
+    <!-- MINI CALENDAR -->
+    <section>
+      <div class="section-label">June Calendar</div>
+      <div class="cal-dow-row">
+        <span>M</span><span>T</span><span>W</span>
+        <span>T</span><span>F</span><span>S</span><span>S</span>
+      </div>
+      <div class="cal-grid" id="calendar-grid"></div>
+    </section>
+
+    <!-- DAY TABS -->
+    <div class="day-tabs" id="day-tabs"></div>
+
+    <!-- CHECKLIST -->
+    <div class="checklist" id="checklist"></div>
+
+    <!-- DAY COMPLETE BANNER -->
+    <div class="complete-banner hidden" id="complete-banner">
+      <div class="complete-emoji">🎉</div>
+      <div class="complete-title">Day Complete!</div>
+      <div class="complete-sub" id="complete-sub"></div>
+    </div>
+
+    <!-- RESET BUTTON -->
+    <button class="reset-btn" id="reset-btn">Reset today's checklist</button>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
